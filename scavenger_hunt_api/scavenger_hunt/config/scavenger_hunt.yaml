@@ -1,6 +1,6 @@
 scavenger_hunt:
   login:
-    email: user@email.com
+    email: samiri1@binghamton.edu
     password: ****
   website:
     domain: https://scavenger-hunt.cs.utexas.edu
@@ -10,4 +10,4 @@ scavenger_hunt:
     get_hunt: /scavenger_hunt/get_hunt
     send_proof: /scavenger_hunt/send_proof
     get_proof_status: /scavenger_hunt/get_proof_status
-  scratch_path: ~/
+  scratch_path: /home/saeidfour

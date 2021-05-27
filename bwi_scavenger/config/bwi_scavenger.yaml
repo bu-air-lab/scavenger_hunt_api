@@ -1,10 +1,10 @@
 bwi_scavenger:
   scav_hunt_login:
-    email: stefandebruyn@utexas.edu
-    password: sick robots
-  ws_path: /home/bwilab/scavenger_hunt
-  world: sim
+    email: samiri1@binghamton.edu
+    password: *****
+  ws_path: /home/saeidfour/catkin_ws
+  world: irl
   topics:
     perception:
-      color: /camera/rgb/image_color
+      color: /camera/rgb/image_raw
       depth: /camera/depth/image
