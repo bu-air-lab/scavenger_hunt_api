@@ -149,13 +149,6 @@ target_link_libraries(bu_node
     ${catkin_LIBRARIES}
     curl)
 
-add_executable(add_two_ints_client
-  src/add_client.cpp)
-target_link_libraries(add_two_ints_client
-    ${OpenCV_LIBS}
-    ${catkin_LIBRARIES}
-    curl)
-
 
 
 target_link_libraries(scavenger_hunt_node
