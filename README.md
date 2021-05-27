@@ -13,9 +13,9 @@ though there is an optional ROS wrapper.
 
 ## Installing
 
-In the `src/` folder of a catkin workspace:
+In the `src/` folder of a catkin workspace (Note from Saeid: remove the older `bwi_scavenger` package and also delete the `build/` and `devel/` folder for fresh compilation):
 
-* `$ git clone https://github.com/utexas-bwi/scavenger_hunt_api.git --recursive` 
+* `$ git clone https://github.com/bu-air-lab/scavenger_hunt_api.git --recursive` 
 
 build using catkin tools; `$ catkin build` in the root of your catkin workspace.
 
