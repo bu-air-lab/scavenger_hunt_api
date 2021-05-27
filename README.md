@@ -27,6 +27,23 @@ This leaves the implementation of how to carry out the hunts up to the individua
 
 Please see the [API](https://scavenger-hunt.cs.utexas.edu/public_html/api.php) webpage for details on the API.
 
+### From Saeid
+
+First localize thge robot using:
+```
+roslaunch bwi_launch segbot_bu
+```
+And then go to the API website, and create a hunt and tasks. Update the hunt name in `bu.cpp` file. To let the robot start the scavenger hunt, run:
+```
+roslaunch scavenger_hunt scavenger_hunt.launch
+rosrun scavenger_hunt server.py
+rosrun scavenger_hunt bu_node
+```
+
+#### TO DO:
+Task execution strategy is in `server.py`. Current code receives the door names o visit locations. There is room to improve it. Also, to find objects, we need to add YOLO or other tolls and a strategy to find food. Robot losing localization at the goal pose also is problematic sometimes. We should ge rid of using the user input to pause the code.
+
+
 ## BWI Scavenger Startup
 
 The following sections outlines what is required to run the full Scavenger Hunt codebase on the BWIBot platforms. 
