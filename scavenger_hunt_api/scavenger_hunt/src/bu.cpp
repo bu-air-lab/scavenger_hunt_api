@@ -28,8 +28,12 @@ void save_image(const sensor_msgs::Image::ConstPtr& msg) {
   if (sent)
     return;
 
-ROS_INFO("Inside the callback"); 
-  image = *msg;
+ROS_INFO("Shall I take photo? (Hit 1, if you want the photo to be taken)");
+int x;
+cin >> x;
+if (x==1){
+image = *msg;	
+}
   sent = true;
   
   proof.image = image;
@@ -66,7 +70,7 @@ int main(int argc, char **argv)
    );
 
 
-	get_hunt.request.hunt_name = "visit_shiqi_office"; // Name of the hunt to download
+	get_hunt.request.hunt_name = "visit_offices"; // Name of the hunt to download
 	client_get_hunt.call(get_hunt);
 	hunt = get_hunt.response.hunt;
 
