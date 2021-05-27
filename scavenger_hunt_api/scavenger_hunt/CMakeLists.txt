@@ -27,8 +27,9 @@ FIND_LIBRARY(curl-7.65.0 curl curl-7.65.0)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
+#catkin_install_python(PROGRAMS scripts/add_two_ints_server.py scripts/add_two_ints_client.py
+#DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
@@ -56,15 +57,14 @@ FIND_LIBRARY(curl-7.65.0 curl curl-7.65.0)
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
-#   Login.msg
+#   std_msgs
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+   FILES
+   AddTwoInts.srv
+ )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -137,6 +137,26 @@ add_executable(scavenger_hunt_node
   src/scavenger_hunt_node.cpp
   src/scavenger_hunt_client.cpp
   src/scavenger_hunt_structure.cpp)
+
+
+add_executable(bu_node
+  src/bu.cpp)
+
+
+
+target_link_libraries(bu_node
+    ${OpenCV_LIBS}
+    ${catkin_LIBRARIES}
+    curl)
+
+add_executable(add_two_ints_client
+  src/add_client.cpp)
+target_link_libraries(add_two_ints_client
+    ${OpenCV_LIBS}
+    ${catkin_LIBRARIES}
+    curl)
+
+
 
 target_link_libraries(scavenger_hunt_node
     ${OpenCV_LIBS}
