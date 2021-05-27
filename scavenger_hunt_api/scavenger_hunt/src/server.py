@@ -2,7 +2,7 @@
 
 
 import subprocess
-from scavenger_hunt.srv import AddTwoInts,AddTwoIntsResponse
+from scavenger_hunt.srv import huntBU,huntBU
 import rospy
 
 def handle_visit_location(location_name):
@@ -22,8 +22,6 @@ def main():
 	print('Make robot is booted up and localized')
 	rospy.spin()
 
-	
-	#visit_location('shiqi_office')
 
 
 

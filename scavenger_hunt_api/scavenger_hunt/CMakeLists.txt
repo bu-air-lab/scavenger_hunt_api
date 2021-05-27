@@ -63,7 +63,7 @@ FIND_LIBRARY(curl-7.65.0 curl curl-7.65.0)
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
-   AddTwoInts.srv
+   huntBU.srv
  )
 
 ## Generate actions in the 'action' folder

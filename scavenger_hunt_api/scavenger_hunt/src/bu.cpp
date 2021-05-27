@@ -8,7 +8,7 @@
 #include <scavenger_hunt_msgs/Task.h>
 #include <scavenger_hunt_msgs/SendProof.h>
 #include <sensor_msgs/Image.h>
-#include <scavenger_hunt/AddTwoInts.h>
+#include <scavenger_hunt/huntBU.h>
 
 #include <iostream>
 using namespace std;
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 	  "/scavenger_hunt/send_proof"
 	); 
 
-	task_execution_client = nh.serviceClient<scavenger_hunt::AddTwoInts>("visit_service");  
+	task_execution_client = nh.serviceClient<scavenger_hunt::huntBU>("visit_service");  
 
 	ros::Rate loop_rate(1);
 
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	int x;
 	cin >> x; // Get user input from the keyboard	 
 
-	scavenger_hunt::AddTwoInts srv;
+	scavenger_hunt::huntBU srv;
 	if (x==1){
 		
 
