@@ -2,14 +2,14 @@
 
 
 import subprocess
-from scavenger_hunt.srv import huntBU,huntBU
+from scavenger_hunt.srv import huntBU
 import rospy
 
-def handle_visit_location(location_name):
+def handle_visit_location(req):
  
 	print ('inside handle')
 	proc = subprocess.Popen(["rosrun","bwi_tasks", "go_to_door_node",
-							"_door:=shiqi_office_d"],stdout=subprocess.PIPE)
+							"_door:="+req.loc_or_obj],stdout=subprocess.PIPE)
 
 	out, err = proc.communicate()
 	print (out)
@@ -17,7 +17,7 @@ def handle_visit_location(location_name):
 
 def main():
 	rospy.init_node('visit_server')
-	s = rospy.Service('visit_service', AddTwoInts, handle_visit_location)
+	s = rospy.Service('visit_service', huntBU, handle_visit_location)
 	print("Ready spin")
 	print('Make robot is booted up and localized')
 	rospy.spin()

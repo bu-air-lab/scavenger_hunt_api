@@ -93,6 +93,9 @@ int main(int argc, char **argv)
 	cin >> x; // Get user input from the keyboard	 
 
 	scavenger_hunt::huntBU srv;
+	srv.request.loc_or_obj = "shiqi_office_d";  //seems liek the term request is needed
+
+
 	if (x==1){
 		
 

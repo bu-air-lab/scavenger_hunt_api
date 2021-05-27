@@ -1,4 +1,3 @@
-int64 a
-int64 b
+string loc_or_obj
 ---
 int64 sum
