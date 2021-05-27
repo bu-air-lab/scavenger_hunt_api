@@ -23,6 +23,7 @@ ros::ServiceClient client_get_hunt, client_get_proof_status, client_send_proof;
 ros::ServiceClient task_execution_client;
 scavenger_hunt_msgs::GetHunt get_hunt;
 scavenger_hunt_msgs::Hunt hunt;
+scavenger_hunt_msgs::Task temp_task;
 
 void save_image(const sensor_msgs::Image::ConstPtr& msg) {
   if (sent)
@@ -37,17 +38,17 @@ image = *msg;
   sent = true;
   
   proof.image = image;
-  scavenger_hunt_msgs::Task task = get_hunt.response.hunt.tasks[0];
-  task = hunt.tasks[0];
+  //scavenger_hunt_msgs::Task temp_task = get_hunt.response.hunt.tasks[0];
+  //temp_task = hunt.tasks[0];
  
     std_msgs::String msg2;
     std::stringstream ss;
-    ss << "Task name is  " << task.name;
+    ss << "Task name is  " << temp_task.name;
     msg2.data = ss.str();
 
     ROS_INFO("%s", msg2.data.c_str());
 
-  send_proof.request.task = task;
+  send_proof.request.task = temp_task;
   send_proof.request.proof = proof;
  
 
@@ -70,7 +71,7 @@ int main(int argc, char **argv)
    );
 
 
-	get_hunt.request.hunt_name = "visit_offices"; // Name of the hunt to download
+	get_hunt.request.hunt_name = "visit_offices"; // Name of the hunt to download, potentially can be received as an input arg
 	client_get_hunt.call(get_hunt);
 	hunt = get_hunt.response.hunt;
 
@@ -83,43 +84,39 @@ int main(int argc, char **argv)
 
 	ros::Rate loop_rate(1);
 
-	int time_task_start;  
+    for (scavenger_hunt_msgs::Task& task : hunt.tasks) {
+    	sent=false;
+ 		 std::string task_name = task.name;
+ 		 temp_task = task;
+  		 std::string parameter = task.parameters[0].value;
+  			// See Task.msg for the full range of information available
+		int time_task_start;  
+		time_task_start = ros::Time::now().toSec(); 
 
-	time_task_start = ros::Time::now().toSec();
-	ros::Duration(1.0).sleep(); 
+		ROS_INFO("Shall I start executing this task?(Hit 1 to say yes)");
+		int x;
+		cin >> x; // Get user input from the keyboard	 
 
-	ROS_INFO("SHall I start executing visit location task?(Hit 1 to say yes");
-	int x;
-	cin >> x; // Get user input from the keyboard	 
+		scavenger_hunt::huntBU srv;
+		srv.request.loc_or_obj = parameter;  //seems like the term request is needed
 
-	scavenger_hunt::huntBU srv;
-	srv.request.loc_or_obj = "shiqi_office_d";  //seems liek the term request is needed
+		if (x==1){	
+			task_execution_client.call(srv);
+		    }
 
+		ROS_INFO("Ready!");    
+	    ROS_INFO("Once the task is finished, hit '1' to verify task execution");
 
-	if (x==1){
-		
+		int y;
+		cin >> y; // Get user input from the keyboard
 
-		task_execution_client.call(srv);
-	}
+		if (y == 1){
+		proof.task_duration = ros::Time::now().toSec() - time_task_start;
+		}
+		ros::Subscriber sub0 = nh.subscribe("/camera/rgb/image_raw",1,save_image);
+  		ros::spin();
 
-	ROS_INFO("Ready!");
-    
-    ROS_INFO("Once the task is finished, hit '1' to verify task execution");
-
-	int y;
-	cin >> y; // Get user input from the keyboard
-
-	if (y == 1){
-	proof.task_duration = ros::Time::now().toSec() - time_task_start;
 }
-
-ros::Subscriber sub0 = nh.subscribe("/camera/rgb/image_raw",1,save_image);
-
-
-
-  ros::spin();
-
-
 	
 
   return 0;
