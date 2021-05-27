@@ -9,6 +9,9 @@
 #include <scavenger_hunt_msgs/SendProof.h>
 #include <sensor_msgs/Image.h>
 #include <scavenger_hunt/huntBU.h>
+#include <string>
+// usefull : http://library.isr.ist.utl.pt/docs/roswiki/ROS(2f)Tutorials(2f)WritingServiceClient(28)c(2b2b29).html
+//useful: 
 
 #include <iostream>
 using namespace std;
@@ -29,10 +32,10 @@ void save_image(const sensor_msgs::Image::ConstPtr& msg) {
   if (sent)
     return;
 
-ROS_INFO("Shall I take photo? (Hit 1, if you want the photo to be taken)");
-int x;
+ROS_INFO("Shall I take photo? (y)");
+string x;
 cin >> x;
-if (x==1){
+if (x=="y"){
 image = *msg;	
 }
   sent = true;
@@ -81,43 +84,50 @@ int main(int argc, char **argv)
 	); 
 
 	task_execution_client = nh.serviceClient<scavenger_hunt::huntBU>("visit_service");  
+	ros::Subscriber sub0 = nh.subscribe("/camera/rgb/image_raw",1,save_image);
 
-	ros::Rate loop_rate(1);
+	//ros::Rate loop_rate(1);
 
-    for (scavenger_hunt_msgs::Task& task : hunt.tasks) {
-    	sent=false;
- 		 std::string task_name = task.name;
- 		 temp_task = task;
-  		 std::string parameter = task.parameters[0].value;
-  			// See Task.msg for the full range of information available
-		int time_task_start;  
-		time_task_start = ros::Time::now().toSec(); 
+	while(ros::ok()){
 
-		ROS_INFO("Shall I start executing this task?(Hit 1 to say yes)");
-		int x;
-		cin >> x; // Get user input from the keyboard	 
+	    for (scavenger_hunt_msgs::Task& task : hunt.tasks) {
+	    	sent=false;
+	 		 std::string task_name = task.name;
+	 		 temp_task = task;
+	  		 std::string parameter = task.parameters[0].value;
+	  			// See Task.msg for the full range of information available
+			int time_task_start;  
+			time_task_start = ros::Time::now().toSec(); 
 
-		scavenger_hunt::huntBU srv;
-		srv.request.loc_or_obj = parameter;  //seems like the term request is needed
+			ROS_INFO("Shall I start executing this task?(y)");
+			string x;
+			cin >> x; // Get user input from the keyboard	 
 
-		if (x==1){	
-			task_execution_client.call(srv);
-		    }
+			scavenger_hunt::huntBU srv;
+			srv.request.loc_or_obj = parameter;  //seems like the term request is needed
 
-		ROS_INFO("Ready!");    
-	    ROS_INFO("Once the task is finished, hit '1' to verify task execution");
+			if (x=="y"){	
+				task_execution_client.call(srv);
+			    }
 
-		int y;
-		cin >> y; // Get user input from the keyboard
+			ROS_INFO("Ready!");    
+		    ROS_INFO("type y if the task is finished");
 
-		if (y == 1){
-		proof.task_duration = ros::Time::now().toSec() - time_task_start;
+			string y;
+			cin >> y; // Get user input from the keyboard
+
+			if (y == "y"){
+				proof.task_duration = ros::Time::now().toSec() - time_task_start;
+						}
+
+			
+			ros::Rate(20).sleep();
+	  		ros::spinOnce();
+
+	  		//ros::spin();
+
 		}
-		ros::Subscriber sub0 = nh.subscribe("/camera/rgb/image_raw",1,save_image);
-  		ros::spin();
-
-}
 	
-
+}
   return 0;
 }

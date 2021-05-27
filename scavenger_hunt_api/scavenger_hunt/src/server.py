@@ -8,6 +8,7 @@ import rospy
 def handle_visit_location(req):
  
 	print ('Inside handle')
+	print ('Be patient, task planner takes a while (15s) to start')
 	# Spawning a process to run the task planner
 	proc = subprocess.Popen(["rosrun","bwi_tasks", "go_to_door_node",
 							"_door:="+req.loc_or_obj],stdout=subprocess.PIPE)
